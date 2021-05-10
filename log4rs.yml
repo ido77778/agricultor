@@ -1,0 +1,11 @@
+refresh_rate: 10 seconds
+appenders:
+  file:
+    kind: file
+    path: "log.log"
+    encoder:
+      pattern: "{d} - {m}{n}"
+root:
+  level: warn
+  appenders:
+    - file

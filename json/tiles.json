@@ -1,0 +1,27 @@
+{
+    "tiles": [
+        {
+            "id": 0,
+            "glyph": "#",
+            "name": "WoodWall",
+            "walkable": false
+        },
+        {
+            "id":1,
+            "glyph":".",
+            "name": "WoodFloor",
+            "walkable": true
+        },
+        {
+            "id":2,
+            "name": "Grass",
+            "walkable": true
+        },
+        {
+            "id":3,
+            "name": "Dirt",
+            "walkable": true
+        }
+
+    ]   
+}
