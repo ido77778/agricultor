@@ -1,4 +1,4 @@
-use std::{collections::HashMap, error, fs::File, io::BufReader, path::Path};
+use std::{collections::HashMap, error, fs::File, io::BufReader, path::Path, str::FromStr};
 
 use serde::{Deserialize};
 use rltk::RGB;
@@ -46,8 +46,23 @@ pub struct TileType
     pub id: u32,
     pub name: String,
     pub glyph: String,
-    pub rgb: RGB,
+    pub rgb: String,
     pub walkable: bool,
+}
+
+impl TileType
+{
+    pub fn get_rgb_from_string(&self) -> RGB
+    {
+        let green = String::from_str("Green");
+        let brown = String::from_str("Brown");
+        match &self.rgb
+        {
+            green => RGB::named(rltk::GREEN),
+            brown => RGB::named(rltk::BROWN1),
+            _ => RGB::named(rltk::WHITE)
+        }
+    }
 }
 
 pub fn get_tiles_hashmap() -> Result<HashMap<u32, TileType>, Box<dyn error::Error>>
@@ -63,18 +78,10 @@ pub fn get_tiles_hashmap() -> Result<HashMap<u32, TileType>, Box<dyn error::Erro
 
     for tile in raw_data.tiles
     {
-        // TODO: Find a way to fix this.
         tiles_hash.insert
         (
             tile.id,
-            TileType
-            {
-                id: tile.id,
-                name: tile.name,
-                glyph: tile.glyph,
-                rgb: ,
-                walkable: tile.walkable,
-            }
+            tile
         );
     }
     

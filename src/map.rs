@@ -1,4 +1,4 @@
-use crate::tiles::TileType;
+// use crate::json::TileType;
 
 pub fn xyz_id(x: i32, y:i32, z:i32) -> usize
 {
@@ -8,8 +8,8 @@ pub fn xyz_id(x: i32, y:i32, z:i32) -> usize
 }
 
 // TODO: Make a basic map.
-pub fn new_map() -> Vec<TileType>
-{
-    let mut map = vec![TileType];
-    map
-}
+// pub fn new_map() -> Vec<TileType>
+// {
+//     let mut map = vec![test];
+//     map
+// }

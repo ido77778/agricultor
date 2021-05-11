@@ -8,7 +8,7 @@ use player::create_player;
 use components::*;
 use json::JsonData;
 use state::State;
-use map::new_map;
+// use map::new_map;
 
 use specs::{ World, WorldExt };
 
