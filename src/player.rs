@@ -17,11 +17,14 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, delta_z: i32, gs: &mut State)
     for (_player, pos) in (&mut players, &mut positions).join()
     {
         let destination_id = xyz_id(pos.x + delta_x, pos.y + delta_y, pos.z + delta_z);
-        // TODO: Handle error if tile does not exist.
         let destination_type = match gs.json.tiles.get(&map[destination_id])
         {
             Some(tt) => tt,
-            None => return ()
+            None =>
+            {
+                error!("Player attempted to move unto a tile that doesn't exist - player::try_move_player");
+                return ()
+            }
         };
         
         if destination_type.walkable == true

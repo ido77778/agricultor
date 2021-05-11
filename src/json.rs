@@ -43,7 +43,7 @@ pub struct TileType
 {
     pub id: u32,
     pub name: String,
-    pub glyph: String,
+    pub glyph: char,
     pub rgb: String,
     pub walkable: bool,
 }

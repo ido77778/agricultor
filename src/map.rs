@@ -1,3 +1,8 @@
+use crate::json::TileType;
+
+use std::collections::HashMap;
+use rltk::{RGB, Rltk};
+
 pub fn xyz_id(x: i32, y:i32, z:i32) -> usize
 {
     // Returns a unique ID (scalar) for a 3D vector.
@@ -18,4 +23,26 @@ pub fn new_map() -> Vec<u32>
         map[xyz_id(79, y, 0)] = 0;
     }
     map
+}
+
+pub fn draw_map(tile_properties: &HashMap<u32, TileType>, map: &[u32], ctx: &mut Rltk)
+{
+    // Indices
+    let mut x = 0;
+    let mut y = 0;
+
+    for tile in map
+    {
+        // Drawing the tile.
+        let tile_type =  tile_properties.get(tile).unwrap();
+        ctx.set(x, y, tile_type.get_rgb_from_string(), RGB::from_f32(0., 0., 0.), rltk::to_cp437(tile_type.glyph));
+
+        // Advancing the loop forward.
+        x += 1;
+        if x > 79
+        {
+            x = 0;
+            y += 1;
+        }
+    }
 }
