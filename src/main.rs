@@ -7,6 +7,7 @@ mod map;
 use player::create_player;
 use components::*;
 use json::JsonData;
+use map::new_map;
 use state::State;
 // use map::new_map;
 
@@ -29,6 +30,8 @@ fn main() -> rltk::BError
     gs.ecs.register::<Position>();
     gs.ecs.register::<Renderable>();
     gs.ecs.register::<Player>();
+
+    gs.ecs.insert(new_map());
 
     create_player(&mut gs, 40, 25, 0);
 

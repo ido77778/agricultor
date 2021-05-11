@@ -18,7 +18,13 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, delta_z: i32, gs: &mut State)
     {
         let destination_id = xyz_id(pos.x + delta_x, pos.y + delta_y, pos.z + delta_z);
         // TODO: Handle error if tile does not exist.
-        if gs.json.tiles.get(&map[destination_id]).unwrap().walkable == false
+        let destination_type = match gs.json.tiles.get(&map[destination_id])
+        {
+            Some(tt) => tt,
+            None => return ()
+        };
+        
+        if destination_type.walkable == true
         {
             // If the would be new position is smaller than the minimum possible, use the minimum.
             // Otherwise, if it is bigger than the maximum, use the maximum.

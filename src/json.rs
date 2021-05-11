@@ -1,4 +1,4 @@
-use std::{collections::HashMap, error, fs::File, io::BufReader, path::Path, str::FromStr};
+use std::{collections::HashMap, error, fs::File, io::BufReader, path::Path};
 
 use serde::{Deserialize};
 use rltk::RGB;
@@ -30,13 +30,11 @@ impl JsonData
     }
 }
 
-
 /* 
 //============//
 //   Tiles    //
 //============//
 */
-
 
 // TODO: Add glyphs and RGBs to the JSON tiles.
 // Contains the properties of a tile.
@@ -54,12 +52,14 @@ impl TileType
 {
     pub fn get_rgb_from_string(&self) -> RGB
     {
-        let green = String::from_str("Green");
-        let brown = String::from_str("Brown");
+        let green = "green".to_string();
+        let brown = "brown".to_string();
+        let burly = "burly".to_string();
         match &self.rgb
         {
             green => RGB::named(rltk::GREEN),
             brown => RGB::named(rltk::BROWN1),
+            burly => RGB::named(rltk::BURLYWOOD),
             _ => RGB::named(rltk::WHITE)
         }
     }
