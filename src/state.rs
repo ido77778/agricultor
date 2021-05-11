@@ -1,14 +1,14 @@
-use crate::{components::*, tiles::TileType};
+use crate::{components::*};
 use crate::player::player_input;
+use crate::json::JsonData;
 
 use rltk::{GameState, Rltk};
 use specs::{Join, World, WorldExt};
-use std::collections::HashMap;
 
 pub struct State
 {
     pub ecs: World,
-    pub tile_types: HashMap<u32, TileType>
+    pub json: JsonData
 }
 
 impl GameState for State

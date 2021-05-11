@@ -15,11 +15,13 @@
         {
             "id":2,
             "name": "Grass",
+            "rgb": "Green",
             "walkable": true
         },
         {
             "id":3,
             "name": "Dirt",
+            "rgb": "Brown",
             "walkable": true
         }
 
