@@ -1,13 +1,15 @@
 mod components;
 mod state;
-mod tiles;
+mod json;
 mod player;
 mod map;
 
 use player::create_player;
 use components::*;
-use state::State;
+use json::JsonData;
 use map::new_map;
+use state::State;
+// use map::new_map;
 
 use specs::{ World, WorldExt };
 
@@ -21,21 +23,15 @@ fn main() -> rltk::BError
     let context = rltk::RltkBuilder::simple80x50()
         .with_title("Agricultor")
         .build()?;
+    
+    let mut gs = State { ecs: World::new(), json: JsonData::new() }; // Gamestate
 
-    let tiles_object = match tiles::get_tiles_hashmap()
-    {
-        Ok(hash) => hash,
-        Err(e) =>
-        {
-            error!("Couldn't get tiles object - tiles::get_tiles_hashmap:\n{}", e);
-            panic!("Couldn't get tiles object.")
-        }
-    };
-    let mut gs = State { ecs: World::new(),  tile_types:  tiles_object}; // Gamestate
     // Register the components.
     gs.ecs.register::<Position>();
     gs.ecs.register::<Renderable>();
     gs.ecs.register::<Player>();
+
+    gs.ecs.insert(new_map());
 
     create_player(&mut gs, 40, 25, 0);
 

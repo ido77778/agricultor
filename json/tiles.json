@@ -3,23 +3,29 @@
         {
             "id": 0,
             "glyph": "#",
+            "rgb": "burly",
             "name": "WoodWall",
             "walkable": false
         },
         {
             "id":1,
             "glyph":".",
+            "rgb": "burly",
             "name": "WoodFloor",
             "walkable": true
         },
         {
             "id":2,
             "name": "Grass",
+            "glyph": ".",
+            "rgb": "green",
             "walkable": true
         },
         {
             "id":3,
             "name": "Dirt",
+            "glyph": ".",
+            "rgb": "brown",
             "walkable": true
         }
 
