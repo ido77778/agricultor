@@ -1,7 +1,6 @@
 use std::{collections::HashMap, error, fs::File, io::BufReader, path::Path};
 
 use serde::{Deserialize};
-use rltk::RGB;
 
 // Contains all useful JSON data.
 pub struct JsonData
@@ -44,25 +43,8 @@ pub struct TileType
     pub id: u32,
     pub name: String,
     pub glyph: char,
-    pub rgb: String,
+    pub rgb: (u8, u8, u8),
     pub walkable: bool,
-}
-
-impl TileType
-{
-    pub fn get_rgb_from_string(&self) -> RGB
-    {
-        let green = "green".to_string();
-        let brown = "brown".to_string();
-        let burly = "burly".to_string();
-        match &self.rgb
-        {
-            green => RGB::named(rltk::GREEN),
-            brown => RGB::named(rltk::BROWN1),
-            burly => RGB::named(rltk::BURLYWOOD),
-            _ => RGB::named(rltk::WHITE)
-        }
-    }
 }
 
 pub fn get_tiles_hashmap() -> Result<HashMap<u32, TileType>, Box<dyn error::Error>>

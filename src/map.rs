@@ -35,7 +35,8 @@ pub fn draw_map(tile_properties: &HashMap<u32, TileType>, map: &[u32], ctx: &mut
     {
         // Drawing the tile.
         let tile_type =  tile_properties.get(tile).unwrap();
-        ctx.set(x, y, tile_type.get_rgb_from_string(), RGB::from_f32(0., 0., 0.), rltk::to_cp437(tile_type.glyph));
+        let color = tile_type.rgb;
+        ctx.set(x, y, RGB::from_u8(color.0, color.1, color.2), RGB::from_f32(0., 0., 0.), rltk::to_cp437(tile_type.glyph));
 
         // Advancing the loop forward.
         x += 1;
