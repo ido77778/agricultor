@@ -35,7 +35,6 @@ impl JsonData
 //============//
 */
 
-// TODO: Add glyphs and RGBs to the JSON tiles.
 // Contains the properties of a tile.
 #[derive(Deserialize)]
 pub struct TileType

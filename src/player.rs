@@ -1,6 +1,6 @@
 use crate::state::State;
 use crate::components::{Position, Player, Renderable};
-use crate::map::xyz_id;
+use crate::map::{xyz_id, Map};
 
 use rltk::{RGB, Rltk, VirtualKeyCode};
 use specs::prelude::*;
@@ -12,12 +12,12 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, delta_z: i32, gs: &mut State)
     // Changes the position of the player, if it is within limitations.
     let mut positions = gs.ecs.write_storage::<Position>();
     let mut players = gs.ecs.write_storage::<Player>();
-    let map = gs.ecs.fetch::<Vec<u32>>();
+    let map = gs.ecs.fetch::<Map>();
 
     for (_player, pos) in (&mut players, &mut positions).join()
     {
         let destination_id = xyz_id(pos.x + delta_x, pos.y + delta_y, pos.z + delta_z);
-        let destination_type = match gs.json.tiles.get(&map[destination_id])
+        let destination_type = match gs.json.tiles.get(&map.map_vector[destination_id])
         {
             Some(tt) => tt,
             None =>
@@ -61,8 +61,24 @@ pub fn player_input(gs: &mut State, ctx: &mut Rltk)
             VirtualKeyCode::Numpad8 => try_move_player(0, -1, 0, gs),
             VirtualKeyCode::Numpad9 => try_move_player(1, -1, 0, gs),
             // Z-level Movement
-            VirtualKeyCode::RBracket => try_move_player(0, 0, 1, gs),
-            VirtualKeyCode::LBracket => try_move_player(0, 0, -1, gs),
+            VirtualKeyCode::RBracket => 
+            {
+                let mut map = gs.ecs.fetch_mut::<Map>();
+                map.current_level += 1;
+                drop(map);
+                try_move_player(0, 0, 1, gs);
+            },
+            VirtualKeyCode::LBracket => 
+            {
+                let mut map = gs.ecs.fetch_mut::<Map>();
+                if map.current_level == 0
+                {
+                    return;
+                }
+                map.current_level -= 1;
+                drop(map);
+                try_move_player(0, 0, -1, gs);
+            },
             _ => {}
         }
     }

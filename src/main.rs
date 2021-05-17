@@ -7,9 +7,8 @@ mod map;
 use player::create_player;
 use components::*;
 use json::JsonData;
-use map::new_map;
+use map::Map;
 use state::State;
-// use map::new_map;
 
 use specs::{ World, WorldExt };
 
@@ -24,14 +23,14 @@ fn main() -> rltk::BError
         .with_title("Agricultor")
         .build()?;
     
-    let mut gs = State { ecs: World::new(), json: JsonData::new() }; // Gamestate
+    let mut gs = State { ecs: World::new(), json: JsonData::new()}; // Gamestate
 
     // Register the components.
     gs.ecs.register::<Position>();
     gs.ecs.register::<Renderable>();
     gs.ecs.register::<Player>();
 
-    gs.ecs.insert(new_map());
+    gs.ecs.insert(Map::new());
 
     create_player(&mut gs, 40, 25, 0);
 

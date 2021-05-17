@@ -1,7 +1,7 @@
 use crate::{components::*};
 use crate::player::player_input;
 use crate::json::JsonData;
-use crate::map::draw_map;
+use crate::map::{Map, draw_level};
 
 use rltk::{GameState, Rltk};
 use specs::{Join, World, WorldExt};
@@ -9,7 +9,7 @@ use specs::{Join, World, WorldExt};
 pub struct State
 {
     pub ecs: World,
-    pub json: JsonData
+    pub json: JsonData,
 }
 
 impl GameState for State
@@ -20,8 +20,8 @@ impl GameState for State
 
         player_input(self, ctx);
 
-        let map = self.ecs.fetch::<Vec<u32>>();
-        draw_map(&self.json.tiles, &map, ctx);
+        let map = self.ecs.fetch_mut::<Map>();
+        draw_level(&self.json.tiles, &map, ctx);
 
         // Reads from storage.
         let positions = self.ecs.read_storage::<Position>();
