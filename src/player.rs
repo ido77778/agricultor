@@ -16,8 +16,9 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, delta_z: i32, gs: &mut State)
 
     for (_player, pos) in (&mut players, &mut positions).join()
     {
-        let destination_id = xyz_id(pos.x + delta_x, pos.y + delta_y, pos.z + delta_z);
-        let destination_type = match gs.json.tiles.get(&map.map_vector[destination_id])
+        warn!("\nxyz_id: {}, get_tile: {}\nxyz_id + delta: {}, get_tile + delta: {}", &map.map_vector[xyz_id(pos.x, pos.y, *&map.current_level as i32)], &map.get_tile(pos.x, pos.y, *&map.current_level as i32), xyz_id(pos.x + delta_x, pos.y + delta_y, *&map.current_level as i32 + delta_z), &map.get_tile(pos.x + delta_x, pos.y + delta_y, *&map.current_level as i32 + delta_z));
+        warn!("current level: {}, pos.z: {}", &map.current_level, pos.z);
+        let destination_type = match gs.json.tiles.get(&map.get_tile(pos.x + delta_x, pos.y + delta_y, pos.z + delta_z))
         {
             Some(tt) => tt,
             None =>
@@ -33,7 +34,7 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, delta_z: i32, gs: &mut State)
             // Otherwise, if it is bigger than the maximum, use the maximum.
             pos.x = min(79, max(0, pos.x + delta_x));
             pos.y = min(49, max(0, pos.y + delta_y));
-            pos.z = min(19, max(-10, pos.z + delta_z));
+            pos.z = min(39, max(0, pos.z + delta_z));
         }
     }
 }

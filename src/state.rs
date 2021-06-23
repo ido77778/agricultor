@@ -1,7 +1,8 @@
 use crate::{components::*};
 use crate::player::player_input;
 use crate::json::JsonData;
-use crate::map::{Map, draw_level};
+use crate::map::{Map};
+use crate::renderer::draw_level;
 
 use rltk::{GameState, Rltk};
 use specs::{Join, World, WorldExt};

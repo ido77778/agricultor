@@ -3,6 +3,7 @@ mod state;
 mod json;
 mod player;
 mod map;
+mod renderer;
 
 use player::create_player;
 use components::*;
@@ -32,7 +33,7 @@ fn main() -> rltk::BError
 
     gs.ecs.insert(Map::new());
 
-    create_player(&mut gs, 40, 25, 0);
+    create_player(&mut gs, 40, 25, 20);
 
     rltk::main_loop(context, gs)
 }
