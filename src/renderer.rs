@@ -12,7 +12,7 @@ pub fn draw_level(tile_properties: &HashMap<u32, TileType>, map: &Map, ctx: &mut
     while y < HEIGHT as i32
     {
         // This should never panic.
-        let tile = map.get_tile((x, y, map.current_level)).unwrap();
+        let tile = map.get_tile((x, y, map.current_level as i32)).unwrap();
 
         // Drawing the tile.
         let tile_type =  tile_properties.get(&tile).unwrap();
