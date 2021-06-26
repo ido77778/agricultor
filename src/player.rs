@@ -1,6 +1,6 @@
 use crate::state::State;
-use crate::components::{Position, Player, Renderable};
-use crate::map::{Map, HEIGHT, WIDTH, DEPTH};
+use crate::components::{Position, Player, Renderable, Viewshed};
+use crate::map::Map;
 
 use rltk::{RGB, Rltk, VirtualKeyCode};
 use specs::prelude::*;
@@ -37,9 +37,9 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, delta_z: i32, gs: &mut State)
         {
             // Since we already handled the case of a negative value, we only need to handle
             // Values above map's dimensions.
-            pos.x = min((WIDTH - 1) as i32, pos.x + delta_x);
-            pos.y = min((HEIGHT - 1) as i32, pos.y + delta_y);
-            pos.z = min((DEPTH - 1) as i32, pos.z + delta_z);
+            pos.x = min((map.width - 1) as i32, pos.x + delta_x);
+            pos.y = min((map.height - 1) as i32, pos.y + delta_y);
+            pos.z = min((map.depth - 1) as i32, pos.z + delta_z);
         }
     }
 }
@@ -99,13 +99,13 @@ pub fn player_input(gs: &mut State, ctx: &mut Rltk)
     }
 }
 
-pub fn create_player(gs: &mut State, x: i32, y: i32, z: i32)
+pub fn create_player(gs: &mut State, pos: (i32, i32, i32))
 {    
     // Creates player.
     gs.ecs
       .create_entity()
       // Gives the player object its various components.
-      .with(Position { x: x, y: y, z: z })
+      .with(Position { x: pos.0, y: pos.1, z: pos.2 })
       .with(Renderable
         {
             glyph: rltk::to_cp437('@'),
@@ -113,5 +113,6 @@ pub fn create_player(gs: &mut State, x: i32, y: i32, z: i32)
             bg: RGB::named(rltk::BLACK),
         })
       .with(Player {})
+      .with(Viewshed { visible_tiles: Vec::new(), range: 8})
       .build();
 }
