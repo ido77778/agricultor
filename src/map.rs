@@ -5,14 +5,14 @@ pub const DEPTH: usize = 40;
 pub struct Map
 {
     pub map_vector: Vec<u32>,
-    pub current_level: u32
+    pub current_level: i32
 }
 
 impl Map
 {
     pub fn new() -> Map
     {
-        let mut map = vec![3; WIDTH*HEIGHT*DEPTH];
+        let map = vec![2; WIDTH*HEIGHT*DEPTH];
         for x in 0..80 {
             map[xyz_id(x, 0, 20)] = 0;
             map[xyz_id(x, 49, 20)] = 0;
@@ -29,23 +29,23 @@ impl Map
         }
     }
 
-    pub fn get_tile(&self, x: i32, y: i32, z: i32) -> u32
+    pub fn get_tile(&self, tile: (i32, i32, i32)) -> Option<u32>
     {
         // Getter for a single map tile.
         // We want to keep the game agnostic as to the actual representation of the map.
-        self.map_vector[xyz_id(x, y, z)]
+        if tile.0 | tile.1 | tile.2 < 0
+        {
+            // Return a None if any of the coordinates is negative.
+            return None;
+        }
+
+        let index = (tile.2 as usize * WIDTH * HEIGHT) + (tile.1 as usize * WIDTH) + tile.0 as usize;
+        Some(self.map_vector[index])
     }
 
-    pub fn set_tile(&mut self, x: i32, y: i32, z: i32, value: u32)
+    pub fn set_tile(&mut self, tile: (i32, i32, i32), value: u32)
     {
-        // Setter for a single map tile.
-        self.map_vector[xyz_id(x, y, z)] = value;
+        let index = (tile.2 as usize * WIDTH * HEIGHT) + (tile.1 as usize * WIDTH) + tile.0 as usize;
+        self.map_vector[index] = value;
     }
-}
-
-pub fn xyz_id(x: i32, y:i32, z:i32) -> usize
-{
-    // Returns a unique ID (scalar) for a 3D vector.
-    // The formula is WIDTH*HEIGHT*z + WIDTH*y + x
-    (z as usize * WIDTH * HEIGHT) + (y as usize * WIDTH) + x as usize
 }

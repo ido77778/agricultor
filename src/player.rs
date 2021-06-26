@@ -1,10 +1,10 @@
 use crate::state::State;
 use crate::components::{Position, Player, Renderable};
-use crate::map::{xyz_id, Map};
+use crate::map::{Map};
 
 use rltk::{RGB, Rltk, VirtualKeyCode};
 use specs::prelude::*;
-use std::cmp::{max, min};
+use std::cmp::min;
 
 
 pub fn try_move_player(delta_x: i32, delta_y: i32, delta_z: i32, gs: &mut State)
@@ -16,9 +16,14 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, delta_z: i32, gs: &mut State)
 
     for (_player, pos) in (&mut players, &mut positions).join()
     {
-        warn!("\nxyz_id: {}, get_tile: {}\nxyz_id + delta: {}, get_tile + delta: {}", &map.map_vector[xyz_id(pos.x, pos.y, *&map.current_level as i32)], &map.get_tile(pos.x, pos.y, *&map.current_level as i32), xyz_id(pos.x + delta_x, pos.y + delta_y, *&map.current_level as i32 + delta_z), &map.get_tile(pos.x + delta_x, pos.y + delta_y, *&map.current_level as i32 + delta_z));
-        warn!("current level: {}, pos.z: {}", &map.current_level, pos.z);
-        let destination_type = match gs.json.tiles.get(&map.get_tile(pos.x + delta_x, pos.y + delta_y, pos.z + delta_z))
+        // warn!("\nxyz_id: {}, get_tile: {}\nxyz_id + delta: {}, get_tile + delta: {}", &map.map_vector[xyz_id(pos.x, pos.y, *&map.current_level as i32)], &map.get_tile(pos.x, pos.y, *&map.current_level as i32), xyz_id(pos.x + delta_x, pos.y + delta_y, *&map.current_level as i32 + delta_z), &map.get_tile(pos.x + delta_x, pos.y + delta_y, *&map.current_level as i32 + delta_z));
+        // warn!("current level: {}, pos.z: {}", &map.current_level, pos.z);
+        let id = match &map.get_tile((pos.x + delta_x, pos.y + delta_y, pos.z + delta_z))
+        {
+            Some(id) => *id,
+            None => return
+        };
+        let destination_type = match gs.json.tiles.get(&id)
         {
             Some(tt) => tt,
             None =>
@@ -30,11 +35,11 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, delta_z: i32, gs: &mut State)
         
         if destination_type.walkable == true
         {
-            // If the would be new position is smaller than the minimum possible, use the minimum.
-            // Otherwise, if it is bigger than the maximum, use the maximum.
-            pos.x = min(79, max(0, pos.x + delta_x));
-            pos.y = min(49, max(0, pos.y + delta_y));
-            pos.z = min(39, max(0, pos.z + delta_z));
+            // Since we already handled the case of a negative value, we only need to handle
+            // Values above map's dimensions.
+            pos.x = min(79, pos.x + delta_x);
+            pos.y = min(49, pos.y + delta_y);
+            pos.z = min(39, pos.z + delta_z);
         }
     }
 }
@@ -47,20 +52,29 @@ pub fn player_input(gs: &mut State, ctx: &mut Rltk)
         None => {} // Nothing happened.
         Some(key) => match key
         {
-            // Arrow Keys
-            VirtualKeyCode::Left => try_move_player(-1, 0, 0, gs),
-            VirtualKeyCode::Right => try_move_player(1, 0, 0, gs),
-            VirtualKeyCode::Up => try_move_player(0, -1, 0, gs),
-            VirtualKeyCode::Down => try_move_player(0, 1, 0, gs),
-            // Numpad
-            VirtualKeyCode::Numpad1 => try_move_player(-1, 1, 0, gs),
-            VirtualKeyCode::Numpad2 => try_move_player(0, 1, 0, gs),
-            VirtualKeyCode::Numpad3 => try_move_player(1, 1, 0, gs),
+            // Directional Movement
+            VirtualKeyCode::Left |
+            VirtualKeyCode::H | 
             VirtualKeyCode::Numpad4 => try_move_player(-1, 0, 0, gs),
-            VirtualKeyCode::Numpad6 => try_move_player(1, 0, 0, gs),
+
+            VirtualKeyCode::Right |
+            VirtualKeyCode::Numpad6 |
+            VirtualKeyCode::L => try_move_player(1, 0, 0, gs),
+
+            VirtualKeyCode::Up |
+            VirtualKeyCode::Numpad8 | 
+            VirtualKeyCode::K => try_move_player(0, -1, 0, gs),
+
+            VirtualKeyCode::Down |
+            VirtualKeyCode::Numpad2 |
+            VirtualKeyCode::J => try_move_player(0, 1, 0, gs),
+
+            // Sideways Movement
+            VirtualKeyCode::Numpad1 => try_move_player(-1, 1, 0, gs),
+            VirtualKeyCode::Numpad3 => try_move_player(1, 1, 0, gs),
             VirtualKeyCode::Numpad7 => try_move_player(-1, -1, 0, gs),
-            VirtualKeyCode::Numpad8 => try_move_player(0, -1, 0, gs),
             VirtualKeyCode::Numpad9 => try_move_player(1, -1, 0, gs),
+
             // Z-level Movement
             VirtualKeyCode::RBracket => 
             {
