@@ -1,6 +1,6 @@
 use crate::state::State;
 use crate::components::{Position, Player, Renderable};
-use crate::map::{Map};
+use crate::map::{Map, HEIGHT, WIDTH, DEPTH};
 
 use rltk::{RGB, Rltk, VirtualKeyCode};
 use specs::prelude::*;
@@ -37,9 +37,9 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, delta_z: i32, gs: &mut State)
         {
             // Since we already handled the case of a negative value, we only need to handle
             // Values above map's dimensions.
-            pos.x = min(79, pos.x + delta_x);
-            pos.y = min(49, pos.y + delta_y);
-            pos.z = min(39, pos.z + delta_z);
+            pos.x = min((WIDTH - 1) as i32, pos.x + delta_x);
+            pos.y = min((HEIGHT - 1) as i32, pos.y + delta_y);
+            pos.z = min((DEPTH - 1) as i32, pos.z + delta_z);
         }
     }
 }
