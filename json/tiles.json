@@ -5,29 +5,32 @@
             "glyph": "#",
             "rgb": [222, 184, 135],
             "name": "WoodWall",
-            "walkable": false
+            "walkable": false,
+            "transparent": false
         },
         {
-            "id":1,
-            "glyph":".",
+            "id": 1,
+            "glyph": ".",
             "rgb": [222, 184, 135],
             "name": "WoodFloor",
-            "walkable": true
+            "walkable": true,
+            "transparent": false
         },
         {
-            "id":2,
+            "id": 2,
             "name": "Grass",
             "glyph": ".",
             "rgb": [124, 252, 0],
-            "walkable": true
+            "walkable": true,
+            "transparent": false
         },
         {
-            "id":3,
+            "id": 3,
             "name": "Dirt",
             "glyph": ".",
             "rgb": [155, 118, 83],
-            "walkable": true
+            "walkable": true,
+            "transparent": false
         }
-
     ]   
 }
