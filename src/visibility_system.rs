@@ -11,7 +11,7 @@ impl<'a> System<'a> for VisibilitySystem
     {
         for (viewshed, pos) in (&mut viewshed, &pos).join()
         {
-            
+
         }
     }
 }
