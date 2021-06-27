@@ -1,12 +1,13 @@
-use std::usize;
+use std::{collections::HashMap, usize};
 use rltk::{Algorithm3D, BaseMap, Point3};
 
-use crate::json::JsonData;
+use crate::json::TileType;
+
 
 pub struct Map
 {
     pub tile_vector: Vec<u32>,
-    pub json: JsonData,
+    pub tile_properties: HashMap<u32, TileType>,
     pub width: u32,
     pub height: u32,
     pub depth: u32,
@@ -15,12 +16,12 @@ pub struct Map
 
 impl Map
 {
-    pub fn new(json: JsonData) -> Map
+    pub fn new(tile_properties: HashMap<u32, TileType>) -> Map
     {
         let mut map = Map
         {
             tile_vector: vec![3; 80*50*40],
-            json,
+            tile_properties,
             width: 80,
             height: 50,
             depth: 40,
@@ -75,7 +76,7 @@ impl BaseMap for Map
 {
     fn is_opaque(&self, idx: usize) -> bool
     {
-        if self.json.tiles.get(&(idx as u32)).unwrap().transparent == false
+        if self.tile_properties.get(&(idx as u32)).unwrap().transparent == false
         { return true; } else { return false; }
     }    
 }

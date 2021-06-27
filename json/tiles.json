@@ -2,17 +2,17 @@
     "tiles": [
         {
             "id": 0,
+            "name": "WoodWall",
             "glyph": "#",
             "rgb": [222, 184, 135],
-            "name": "WoodWall",
             "walkable": false,
             "transparent": false
         },
         {
             "id": 1,
+            "name": "WoodFloor",
             "glyph": ".",
             "rgb": [222, 184, 135],
-            "name": "WoodFloor",
             "walkable": true,
             "transparent": false
         },
@@ -22,7 +22,7 @@
             "glyph": ".",
             "rgb": [124, 252, 0],
             "walkable": true,
-            "transparent": false
+            "transparent": true
         },
         {
             "id": 3,
@@ -30,7 +30,23 @@
             "glyph": ".",
             "rgb": [155, 118, 83],
             "walkable": true,
+            "transparent": true
+        },
+        {
+            "id": 4,
+            "name": "DirtWall",
+            "glyph": "#",
+            "rgb": [155, 118, 83],
+            "walkable": false,
             "transparent": false
+        },
+        {
+            "id": 5,
+            "name": "GlassWindow",
+            "glyph": "\"",
+            "rgb": [190, 190, 190],
+            "walkable": false,
+            "transparent": true
         }
     ]   
 }

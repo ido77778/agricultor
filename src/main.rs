@@ -34,7 +34,7 @@ fn main() -> rltk::BError
     gs.ecs.register::<Player>();
     gs.ecs.register::<Viewshed>();
 
-    gs.ecs.insert(Map::new(json));
+    gs.ecs.insert(Map::new(json.tiles));
 
     create_player(&mut gs, (40, 25, 20));
 
