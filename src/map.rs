@@ -28,31 +28,33 @@ impl Map
             current_level: 20
         };
 
-        for x in 0..80 {
-            map.set_tile((x, 0, 20), 0);
-            map.set_tile((x, 49, 20), 0);
+        for x in 0..80
+        {
+            map.set_tile(Point3::new(x, 0, 20), 0);
+            map.set_tile(Point3::new(x, 49, 20), 0);
         }
-        for y in 0..50 {
-            map.set_tile((0, y, 20), 0);
-            map.set_tile((79, y, 20), 0);
+        for y in 0..50
+        {
+            map.set_tile(Point3::new(0, y, 20), 0);
+            map.set_tile(Point3::new(79, y, 20), 0);
         }
         map
     }
 
-    pub fn xyz_id(&self, point: (i32, i32, i32)) -> Option<usize>
+    pub fn xyz_id(&self, point: Point3) -> Option<usize>
     {
     // Returns a unique ID (scalar) for a 3D vector.
     // The formula is WIDTH*HEIGHT*z + WIDTH*y + x
-    if point.0 | point.1 | point.2 < 0
+    if point.x | point.y | point.z < 0
     {
         // Return a None if any of the coordinates is negative.
         return None;
     }
 
-    Some((point.2 as usize * (self.width * self.height) as usize) + (point.1 as usize * self.width as usize) + point.0 as usize)
+    Some((point.z as usize * (self.width * self.height) as usize) + (point.y as usize * self.width as usize) + point.x as usize)
     }
 
-    pub fn get_tile(&self, point: (i32, i32, i32)) -> Option<u32>
+    pub fn get_tile(&self, point: Point3) -> Option<u32>
     {
         // Getter for a single map tile.
         // We want to keep the game agnostic as to the actual representation of the map.
@@ -60,7 +62,7 @@ impl Map
         Some(self.tile_vector[index])
     }
 
-    pub fn set_tile(&mut self, point: (i32, i32, i32), value: u32)
+    pub fn set_tile(&mut self, point: Point3, value: u32)
     {
         // Setter for a single map tile.
         let index = match self.xyz_id(point)
@@ -83,7 +85,7 @@ impl BaseMap for Map
 
 impl Algorithm3D for Map
 {
-    fn dimensions(&self) -> rltk::Point3
+    fn dimensions(&self) -> Point3
     {
         Point3::new(self.width, self.height, self.depth)
     }

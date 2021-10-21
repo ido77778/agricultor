@@ -2,7 +2,7 @@ use crate::state::State;
 use crate::components::{Position, Player, Renderable, Viewshed};
 use crate::map::Map;
 
-use rltk::{RGB, Rltk, VirtualKeyCode};
+use rltk::{Point3, RGB, Rltk, VirtualKeyCode};
 use specs::prelude::*;
 use std::cmp::min;
 
@@ -18,7 +18,7 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, delta_z: i32, gs: &mut State)
     {
         // warn!("\nxyz_id: {}, get_tile: {}\nxyz_id + delta: {}, get_tile + delta: {}", &map.map_vector[xyz_id(pos.x, pos.y, *&map.current_level as i32)], &map.get_tile(pos.x, pos.y, *&map.current_level as i32), xyz_id(pos.x + delta_x, pos.y + delta_y, *&map.current_level as i32 + delta_z), &map.get_tile(pos.x + delta_x, pos.y + delta_y, *&map.current_level as i32 + delta_z));
         // warn!("current level: {}, pos.z: {}", &map.current_level, pos.z);
-        let id = match &map.get_tile((pos.x + delta_x, pos.y + delta_y, pos.z + delta_z))
+        let id = match &map.get_tile(Point3::new(pos.x + delta_x, pos.y + delta_y, pos.z + delta_z))
         {
             Some(id) => *id,
             None => return
