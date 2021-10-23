@@ -1,9 +1,9 @@
 use crate::json::{TileType};
-use crate::map::{Map, WIDTH, HEIGHT};
+use crate::map::{Map};
 
 use std::char::from_u32;
 use std::{collections::HashMap};
-use rltk::{Point3, RGB, Rltk};
+use rltk::{RGB, Rltk};
 
 pub fn draw_level(tile_properties: &HashMap<u32, TileType>, map: &Map, ctx: &mut Rltk)
 {

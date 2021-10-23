@@ -4,7 +4,6 @@ use crate::player::player_input;
 use crate::json::JsonData;
 use crate::map::Map;
 use crate::renderer::draw_level;
-use crate::visibility_system::VisibilitySystem;
 
 use rltk::{GameState, Rltk};
 use specs::{Join, RunNow, World, WorldExt};
@@ -13,16 +12,6 @@ pub struct State
 {
     pub ecs: World,
     pub json: JsonData,
-}
-
-impl State
-{
-    fn run_systems(&mut self)
-    {
-        let mut vis = VisibilitySystem{};
-        vis.run_now(&self.ecs);
-        self.ecs.maintain();
-    }
 }
 
 impl GameState for State

@@ -5,7 +5,6 @@ mod json;
 mod player;
 mod map;
 mod renderer;
-mod visibility_system;
 
 use player::create_player;
 use components::*;
@@ -29,7 +28,6 @@ fn main() -> rltk::BError
         .build()?;
     
     let mut gs = State { ecs: World::new(), json: JsonData::new()}; // Gamestate
-    let json = JsonData::new();
 
     // Register the components.
     gs.ecs.register::<Position>();
@@ -37,7 +35,7 @@ fn main() -> rltk::BError
     gs.ecs.register::<Player>();
     gs.ecs.register::<Viewshed>();
 
-    gs.ecs.insert(Map::new(json.tiles));
+    gs.ecs.insert(Map::new());
 
     create_player(&mut gs, 40, 25);
 
