@@ -1,10 +1,15 @@
+use rltk::{Algorithm2D, BaseMap, Point};
+
+use crate::JSON;
+
 pub const WIDTH: usize = 80;
 pub const HEIGHT: usize = 50;
 
 pub struct Map
 {
     pub map_vector: Vec<u32>,
-    pub current_level: u32
+    width: usize,
+    height: usize
 }
 
 impl Map
@@ -24,7 +29,8 @@ impl Map
         Map
         {
             map_vector: map,
-            current_level: 20
+            width: WIDTH,
+            height: HEIGHT
         }
     }
 
@@ -35,7 +41,7 @@ impl Map
         let index = xy_id(tile)?;
 
         // warn!("{}", index);
-        
+
         Some(self.map_vector[index])
     }
 
@@ -48,6 +54,28 @@ impl Map
             None => return
         };
         self.map_vector[index] = value;
+    }
+}
+
+impl Algorithm2D for Map
+{
+    fn dimensions(&self) -> Point
+    {
+        Point::new(self.width, self.height)
+    }
+}
+
+impl BaseMap for Map
+{
+    fn is_opaque(&self, idx: usize) -> bool
+    {
+        JSON.with
+        (
+            |data|
+            {
+                data.tiles[&self.map_vector[idx]].opaque
+            }
+        )
     }
 }
 

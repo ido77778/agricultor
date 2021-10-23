@@ -6,7 +6,7 @@
             "rgb": [222, 184, 135],
             "name": "WoodWall",
             "walkable": false,
-            "transparent": false
+            "opaque": true
         },
         {
             "id": 1,
@@ -14,7 +14,7 @@
             "rgb": [222, 184, 135],
             "name": "WoodFloor",
             "walkable": true,
-            "transparent": false
+            "opaque": false
         },
         {
             "id": 2,
@@ -22,7 +22,7 @@
             "glyph": ".",
             "rgb": [124, 252, 0],
             "walkable": true,
-            "transparent": false
+            "opaque": false
         },
         {
             "id": 3,
@@ -30,7 +30,7 @@
             "glyph": ".",
             "rgb": [155, 118, 83],
             "walkable": true,
-            "transparent": false
+            "opaque": false
         }
     ]   
 }

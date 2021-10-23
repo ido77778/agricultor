@@ -44,7 +44,7 @@ pub struct TileType
     pub glyph: char,
     pub rgb: (u8, u8, u8),
     pub walkable: bool,
-    pub transparent: bool
+    pub opaque: bool
 }
 
 pub fn get_tiles_hashmap() -> Result<HashMap<u32, TileType>, Box<dyn error::Error>>

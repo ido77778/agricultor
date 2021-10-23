@@ -7,8 +7,37 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug",
-            "program": "${workspaceFolder}/<your program>",
+            "name": "Debug executable 'agricultor'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=agricultor",
+                    "--package=agricultor"
+                ],
+                "filter": {
+                    "name": "agricultor",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'agricultor'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=agricultor",
+                    "--package=agricultor"
+                ],
+                "filter": {
+                    "name": "agricultor",
+                    "kind": "bin"
+                }
+            },
             "args": [],
             "cwd": "${workspaceFolder}"
         }

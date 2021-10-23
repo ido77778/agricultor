@@ -4,6 +4,7 @@ mod json;
 mod player;
 mod map;
 mod renderer;
+mod visibility_system;
 
 use player::create_player;
 use components::*;
@@ -15,6 +16,8 @@ use specs::{ World, WorldExt };
 
 #[macro_use]
 extern crate log;
+
+thread_local! {pub static JSON: JsonData = JsonData::new() }
 
 fn main() -> rltk::BError
 {
@@ -30,6 +33,7 @@ fn main() -> rltk::BError
     gs.ecs.register::<Position>();
     gs.ecs.register::<Renderable>();
     gs.ecs.register::<Player>();
+    gs.ecs.register::<Viewshed>();
 
     gs.ecs.insert(Map::new());
 

@@ -1,6 +1,7 @@
 use crate::state::State;
-use crate::components::{Position, Player, Renderable};
+use crate::components::{Player, Position, Renderable, Viewshed};
 use crate::map::{Map, HEIGHT, WIDTH};
+use crate::JSON;
 
 use rltk::{RGB, Rltk, VirtualKeyCode};
 use specs::prelude::*;
@@ -21,19 +22,14 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, gs: &mut State)
         let id = match &map.get_tile((pos.x + delta_x, pos.y + delta_y))
         {
             Some(id) => *id,
-            None => return
-        };
-        let destination_type = match gs.json.tiles.get(&id)
-        {
-            Some(tt) => tt,
             None =>
             {
                 error!("Player attempted to move unto a tile that doesn't exist - player::try_move_player");
-                return ()
+                return()
             }
         };
         
-        if destination_type.walkable == true
+        if JSON.with(|data| { data.tiles[&id].walkable }) == true
         {
             // Since we already handled the case of a negative value, we only need to handle
             // Values above map's dimensions.
@@ -92,5 +88,6 @@ pub fn create_player(gs: &mut State, x: i32, y: i32)
             bg: RGB::named(rltk::BLACK),
         })
       .with(Player {})
+      .with(Viewshed { visible_tiles: Vec::new(), range: 8 })
       .build();
 }
