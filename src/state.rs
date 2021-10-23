@@ -11,7 +11,6 @@ use specs::{Join, RunNow, World, WorldExt};
 pub struct State
 {
     pub ecs: World,
-    pub json: JsonData,
 }
 
 impl GameState for State
@@ -23,7 +22,7 @@ impl GameState for State
         player_input(self, ctx);
 
         let map = self.ecs.fetch_mut::<Map>();
-        draw_level(&self.json.tiles, &map, ctx);
+        draw_level(&map, ctx);
 
         // Reads from storage.
         let positions = self.ecs.read_storage::<Position>();

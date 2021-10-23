@@ -27,7 +27,7 @@ fn main() -> rltk::BError
         .with_title("Agricultor")
         .build()?;
     
-    let mut gs = State { ecs: World::new(), json: JsonData::new()}; // Gamestate
+    let mut gs = State { ecs: World::new() }; // Gamestate
 
     // Register the components.
     gs.ecs.register::<Position>();
