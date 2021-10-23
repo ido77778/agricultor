@@ -14,7 +14,7 @@ pub struct Map
 
 impl Map
 {
-    pub fn new() -> Map
+    pub fn new(tile_properties: HashMap<u32, TileType>) -> Map
     {
         let mut map = vec![3; (WIDTH+1)*(HEIGHT+1)];
         for x in 0..80 {
@@ -32,6 +32,25 @@ impl Map
             width: WIDTH,
             height: HEIGHT
         }
+        for y in 0..50
+        {
+            map.set_tile(Point3::new(0, y, 20), 0);
+            map.set_tile(Point3::new(79, y, 20), 0);
+        }
+        map
+    }
+
+    pub fn xyz_id(&self, point: Point3) -> Option<usize>
+    {
+    // Returns a unique ID (scalar) for a 3D vector.
+    // The formula is WIDTH*HEIGHT*z + WIDTH*y + x
+    if point.x | point.y | point.z < 0
+    {
+        // Return a None if any of the coordinates is negative.
+        return None;
+    }
+
+    Some((point.z as usize * (self.width * self.height) as usize) + (point.y as usize * self.width as usize) + point.x as usize)
     }
 
     pub fn get_tile(&self, tile: (i32, i32)) -> Option<u32>
@@ -53,7 +72,7 @@ impl Map
             Some(index) => index,
             None => return
         };
-        self.map_vector[index] = value;
+        self.tile_vector[index] = value;
     }
 }
 

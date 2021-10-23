@@ -3,14 +3,14 @@ use crate::map::{Map, WIDTH, HEIGHT};
 
 use std::char::from_u32;
 use std::{collections::HashMap};
-use rltk::{RGB, Rltk};
+use rltk::{Point3, RGB, Rltk};
 
 pub fn draw_level(tile_properties: &HashMap<u32, TileType>, map: &Map, ctx: &mut Rltk)
 {
     // Indices
     let mut x: i32 = 0;
     let mut y: i32 = 0;
-    while y < HEIGHT as i32
+    while y < map.height as i32
     {
         // This should never panic.
         let tile = map.get_tile((x, y)).unwrap();
@@ -34,7 +34,7 @@ pub fn draw_level(tile_properties: &HashMap<u32, TileType>, map: &Map, ctx: &mut
     
         // Advancing the loop forward.
         x += 1;
-        if x > WIDTH as i32
+        if x > map.width as i32
         {
             x = 0;
             y += 1;
