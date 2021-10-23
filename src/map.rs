@@ -10,8 +10,10 @@ pub const HEIGHT: usize = 50;
 pub struct Map
 {
     pub map_vector: Vec<u32>,
-    pub width: usize,
-    pub height: usize
+    pub width: i32,
+    pub height: i32,
+    pub revealed_tiles: Vec<bool>,
+    pub visible_tiles: Vec<bool>
 }
 
 impl Map
@@ -20,19 +22,21 @@ impl Map
     {
         let mut map = vec![3; (WIDTH+1)*(HEIGHT+1)];
         for x in 0..80 {
-            map[xy_id((x, 0)).unwrap()] = 0;
-            map[xy_id((x, 49)).unwrap()] = 0;
+            map[Map::xy_id((x, 0)).unwrap()] = 0;
+            map[Map::xy_id((x, 49)).unwrap()] = 0;
         }
         for y in 0..50 {
-            map[xy_id((0, y)).unwrap()] = 0;
-            map[xy_id((79, y)).unwrap()] = 0;
+            map[Map::xy_id((0, y)).unwrap()] = 0;
+            map[Map::xy_id((79, y)).unwrap()] = 0;
         }
 
         Map
         {
             map_vector: map,
-            width: WIDTH,
-            height: HEIGHT
+            width: WIDTH as i32,
+            height: HEIGHT as i32,
+            revealed_tiles: vec![false; (WIDTH+1)*(HEIGHT+1)],
+            visible_tiles: vec![false; (WIDTH+1)*(HEIGHT+1)]
         }
     }
 
@@ -40,7 +44,7 @@ impl Map
     {
         // Getter for a single map tile.
         // We want to keep the game agnostic as to the actual representation of the map.
-        let index = xy_id(tile)?;
+        let index = Map::xy_id(tile)?;
 
         // warn!("{}", index);
 
@@ -50,12 +54,25 @@ impl Map
     pub fn set_tile(&mut self, tile: (i32, i32), value: u32)
     {
         // Setter for a single map tile.
-        let index = match xy_id(tile)
+        let index = match Map::xy_id(tile)
         {
             Some(index) => index,
             None => return
         };
         self.map_vector[index] = value;
+    }
+
+    pub fn xy_id(tile: (i32, i32)) -> Option<usize>
+    {
+        // Returns a unique ID (scalar) for a 3D vector.
+        // The formula is WIDTH*y + x
+        if tile.0 | tile.1 < 0
+        {
+            // Return a None if any of the coordinates is negative.
+            return None;
+        }
+
+        Some((tile.1 as usize * WIDTH) + tile.0 as usize)
     }
 }
 
@@ -72,24 +89,6 @@ impl BaseMap for Map
     fn is_opaque(&self, idx: usize) -> bool
     {
         JSON.with
-        (
-            |data|
-            {
-                data.tiles[&self.map_vector[idx]].opaque
-            }
-        )
+        (|data| { data.tiles[&self.map_vector[idx]].opaque })
     }
-}
-
-fn xy_id(tile: (i32, i32)) -> Option<usize>
-{
-    // Returns a unique ID (scalar) for a 3D vector.
-    // The formula is WIDTH*HEIGHT*z + WIDTH*y + x
-    if tile.0 | tile.1 < 0
-    {
-        // Return a None if any of the coordinates is negative.
-        return None;
-    }
-    // warn!("{}", (tile.1 as usize * WIDTH) + tile.0 as usize);
-    Some((tile.1 as usize * WIDTH) + tile.0 as usize)
 }

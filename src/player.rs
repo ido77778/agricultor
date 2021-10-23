@@ -13,9 +13,10 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, gs: &mut State)
     // Changes the position of the player, if it is within limitations.
     let mut positions = gs.ecs.write_storage::<Position>();
     let mut players = gs.ecs.write_storage::<Player>();
+    let mut viewsheds = gs.ecs.write_storage::<Viewshed>();
     let map = gs.ecs.fetch::<Map>();
 
-    for (_player, pos) in (&mut players, &mut positions).join()
+    for (_player, pos, viewshed) in (&mut players, &mut positions, &mut viewsheds).join()
     {
         // warn!("\nxyz_id: {}, get_tile: {}\nxyz_id + delta: {}, get_tile + delta: {}", &map.map_vector[xyz_id(pos.x, pos.y, *&map.current_level as i32)], &map.get_tile(pos.x, pos.y, *&map.current_level as i32), xyz_id(pos.x + delta_x, pos.y + delta_y, *&map.current_level as i32 + delta_z), &map.get_tile(pos.x + delta_x, pos.y + delta_y, *&map.current_level as i32 + delta_z));
         // warn!("current level: {}, pos.z: {}", &map.current_level, pos.z);
@@ -29,6 +30,8 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, gs: &mut State)
             }
         };
         
+        viewshed.dirty = true;
+
         if JSON.with(|data| { data.tiles[&id].walkable }) == true
         {
             // Since we already handled the case of a negative value, we only need to handle
@@ -88,6 +91,6 @@ pub fn create_player(gs: &mut State, x: i32, y: i32)
             bg: RGB::named(rltk::BLACK),
         })
       .with(Player {})
-      .with(Viewshed { visible_tiles: Vec::new(), range: 8 })
+      .with(Viewshed { visible_tiles: Vec::new(), range: 8, dirty: true })
       .build();
 }

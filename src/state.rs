@@ -20,9 +20,8 @@ impl GameState for State
         ctx.cls();
 
         player_input(self, ctx);
-
-        let map = self.ecs.fetch_mut::<Map>();
-        draw_level(&map, ctx);
+        draw_level(&self.ecs, ctx);
+        self.run_systems();
 
         // Reads from storage.
         let positions = self.ecs.read_storage::<Position>();
