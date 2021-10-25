@@ -31,6 +31,22 @@
             "rgb": [155, 118, 83],
             "walkable": true,
             "opaque": false
+        },
+        {
+            "id": 4,
+            "name": "StoneWall",
+            "glyph": "#",
+            "rgb": [128, 128, 128],
+            "walkable": false,
+            "opaque": true
+        },
+        {
+            "id": 5,
+            "name": "StoneFloor",
+            "glyph": ".",
+            "rgb": [96, 96, 96],
+            "walkable": true,
+            "opaque": false
         }
     ]   
 }

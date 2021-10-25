@@ -11,7 +11,7 @@ pub fn draw_level(ecs: &World, ctx: &mut Rltk)
     let mut players = ecs.write_storage::<Player>();
     let map = ecs.fetch::<Map>();
 
-    for (_player, viewshed) in (&mut players, &mut viewsheds).join() 
+    for (_player, _viewshed) in (&mut players, &mut viewsheds).join() 
     {
         // Indices
         let mut x: i32 = 0;

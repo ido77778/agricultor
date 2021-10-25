@@ -1,8 +1,7 @@
-use std::collections::HashMap;
-
 use rltk::{Algorithm2D, BaseMap, Point};
 
-use crate::{JSON, json::TileType};
+use crate::{JSON};
+use crate::locations::caves::generate_cavern;
 
 pub const WIDTH: usize = 80;
 pub const HEIGHT: usize = 50;
@@ -10,8 +9,8 @@ pub const HEIGHT: usize = 50;
 pub struct Map
 {
     pub map_vector: Vec<u32>,
-    pub width: i32,
-    pub height: i32,
+    pub width: usize,
+    pub height: usize,
     pub revealed_tiles: Vec<bool>,
     pub visible_tiles: Vec<bool>
 }
@@ -20,21 +19,23 @@ impl Map
 {
     pub fn new() -> Map
     {
-        let mut map = vec![3; (WIDTH+1)*(HEIGHT+1)];
-        for x in 0..80 {
-            map[Map::xy_id((x, 0)).unwrap()] = 0;
-            map[Map::xy_id((x, 49)).unwrap()] = 0;
-        }
-        for y in 0..50 {
-            map[Map::xy_id((0, y)).unwrap()] = 0;
-            map[Map::xy_id((79, y)).unwrap()] = 0;
-        }
+        // let mut map = vec![1; (WIDTH+1)*(HEIGHT+1)];
+        // for x in 0..80 {
+        //     map[Map::xy_id((x, 0)).unwrap()] = 0;
+        //     map[Map::xy_id((x, 49)).unwrap()] = 0;
+        // }
+        // for y in 0..50 {
+        //     map[Map::xy_id((0, y)).unwrap()] = 0;
+        //     map[Map::xy_id((79, y)).unwrap()] = 0;
+        // }
+        
+        let map = generate_cavern(WIDTH, HEIGHT);
 
         Map
         {
             map_vector: map,
-            width: WIDTH as i32,
-            height: HEIGHT as i32,
+            width: WIDTH,
+            height: HEIGHT,
             revealed_tiles: vec![false; (WIDTH+1)*(HEIGHT+1)],
             visible_tiles: vec![false; (WIDTH+1)*(HEIGHT+1)]
         }
@@ -44,7 +45,7 @@ impl Map
     {
         // Getter for a single map tile.
         // We want to keep the game agnostic as to the actual representation of the map.
-        let index = Map::xy_id(tile)?;
+        let index = Map::xy_id(tile);
 
         // warn!("{}", index);
 
@@ -54,25 +55,19 @@ impl Map
     pub fn set_tile(&mut self, tile: (i32, i32), value: u32)
     {
         // Setter for a single map tile.
-        let index = match Map::xy_id(tile)
-        {
-            Some(index) => index,
-            None => return
-        };
-        self.map_vector[index] = value;
+        self.map_vector[Map::xy_id(tile)] = value;
     }
 
-    pub fn xy_id(tile: (i32, i32)) -> Option<usize>
+    pub fn xy_id(tile: (i32, i32)) -> usize
     {
         // Returns a unique ID (scalar) for a 3D vector.
         // The formula is WIDTH*y + x
         if tile.0 | tile.1 < 0
         {
-            // Return a None if any of the coordinates is negative.
-            return None;
+            panic!("FUGGGGG NEGATIVE TILES REEEE")
         }
 
-        Some((tile.1 as usize * WIDTH) + tile.0 as usize)
+        (tile.1 as usize * WIDTH) + tile.0 as usize
     }
 }
 

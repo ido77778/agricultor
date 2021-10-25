@@ -6,6 +6,7 @@ use crate::JSON;
 use rltk::{RGB, Rltk, VirtualKeyCode};
 use specs::prelude::*;
 use std::cmp::min;
+use std::mem::drop;
 
 
 pub fn try_move_player(delta_x: i32, delta_y: i32, gs: &mut State)
@@ -18,6 +19,11 @@ pub fn try_move_player(delta_x: i32, delta_y: i32, gs: &mut State)
 
     for (_player, pos, viewshed) in (&mut players, &mut positions, &mut viewsheds).join()
     {
+        if pos.x + delta_x < 0 || pos.y + delta_y < 0 // No negative positions!
+        {
+            return ();
+        }
+
         // warn!("\nxyz_id: {}, get_tile: {}\nxyz_id + delta: {}, get_tile + delta: {}", &map.map_vector[xyz_id(pos.x, pos.y, *&map.current_level as i32)], &map.get_tile(pos.x, pos.y, *&map.current_level as i32), xyz_id(pos.x + delta_x, pos.y + delta_y, *&map.current_level as i32 + delta_z), &map.get_tile(pos.x + delta_x, pos.y + delta_y, *&map.current_level as i32 + delta_z));
         // warn!("current level: {}, pos.z: {}", &map.current_level, pos.z);
         let id = match &map.get_tile((pos.x + delta_x, pos.y + delta_y))
@@ -77,8 +83,22 @@ pub fn player_input(gs: &mut State, ctx: &mut Rltk)
     }
 }
 
-pub fn create_player(gs: &mut State, x: i32, y: i32)
-{    
+pub fn create_player(gs: &mut State, mut x: i32, mut y: i32)
+{
+    let map = gs.ecs.fetch::<Map>();
+    let vector = &map.map_vector;
+
+    while !JSON.with(|data| { data.tiles[&vector[Map::xy_id((x, y))]].walkable })
+    {
+        x = x + 1;
+        if x == (map.width-1) as i32
+        {
+            y = y + 1;
+            x = 1;
+        }
+    }
+    drop(map);
+
     // Creates player.
     gs.ecs
       .create_entity()

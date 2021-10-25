@@ -27,7 +27,7 @@ impl<'a> System<'a> for VisibilitySystem
                 viewshed.dirty = false;
                 viewshed.visible_tiles.clear();
                 viewshed.visible_tiles = field_of_view(Point::new(pos.x, pos.y), viewshed.range, &*map);
-                viewshed.visible_tiles.retain(|p| p.x >= 0 && p.x < map.width && p.y >= 0 && p.y < map.height );
+                viewshed.visible_tiles.retain(|p| p.x >= 0 && p.x < map.width as i32 && p.y >= 0 && p.y < map.height as i32 );
     
                 // let viewshed_copy1 = viewshed.visible_tiles.clone();
                 // let viewshed_copy2 = viewshed.visible_tiles.clone();
@@ -39,7 +39,7 @@ impl<'a> System<'a> for VisibilitySystem
                 {
                     for vis in viewshed.visible_tiles.iter() 
                     {
-                        let idx = Map::xy_id((vis.x, vis.y)).unwrap();
+                        let idx = Map::xy_id((vis.x, vis.y));
                         map.revealed_tiles[idx] = true;
                         // visible_tiles is exactly the same as the player's viewshed. We reset it every time the player moves.
                         // We do this round-about process because in the renderer, using contain on the viewshed is much slower than

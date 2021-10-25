@@ -1,8 +1,6 @@
 use crate::visibility_system::VisibilitySystem;
 use crate::components::*;
 use crate::player::player_input;
-use crate::json::JsonData;
-use crate::map::Map;
 use crate::renderer::draw_level;
 
 use rltk::{GameState, Rltk};
