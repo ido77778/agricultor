@@ -38,7 +38,7 @@ fn main() -> rltk::BError
 
     gs.ecs.insert(Map::new());
 
-    create_player(&mut gs, 0, 0);
+    create_player(&mut gs, 45, 45);
 
     rltk::main_loop(context, gs)
 }

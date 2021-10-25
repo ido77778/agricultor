@@ -2,10 +2,10 @@ use rand::Rng;
 
 use crate::map::Map;
 
-const DEATH_LIMIT: u8 = 3;
-const BIRTH_LIMIT: u8 = 4;
-const NUMBER_OF_ITERATIONS: u8 = 4;
-const CHANCE_TO_FLOOR: f32 = 0.4;
+const DEATH_LIMIT: u8 = 3; // 3
+const BIRTH_LIMIT: u8 = 4; // 4
+const NUMBER_OF_ITERATIONS: u8 = 4; // 2-4
+const CHANCE_TO_FLOOR: f32 = 0.4; // 0.4
 
 pub fn generate_cavern(width: usize, height: usize) -> Vec<u32>
 {
@@ -37,6 +37,8 @@ fn iterate(old_cave: Vec<u32>, width: usize, height: usize) -> Vec<u32>
     {
         for y in (0..height).step_by(1)
         {
+            // warn!("({}, {})", x, y);
+
             let current_tile = Map::xy_id((x as i32, y as i32));
             let alive_neighbour_count = count_alive_neighbours(&old_cave, (x as i32, y as i32), width, height);
 
@@ -67,27 +69,32 @@ fn iterate(old_cave: Vec<u32>, width: usize, height: usize) -> Vec<u32>
     new_cave
 }
 
-fn count_alive_neighbours(cave: &Vec<u32>, cell: (i32, i32), width: usize, height: usize) -> u8
+fn count_alive_neighbours(cave: &Vec<u32>, tile: (i32, i32), width: usize, height: usize) -> u8
 {
     // Counting the number of floor neighbours by iterating through them.
     let mut count: u8 = 0;
-    for i in (-1..1).step_by(1)
+    for i in (-1..2).step_by(1)
     {
-        for j in (-1..1).step_by(1) 
+        for j in (-1..2).step_by(1) 
         {
-            let neighbour_x = cell.0 + i;
-            let neighbour_y = cell.1 + j;
-            
+            let neighbour_x = tile.0 + i;
+            let neighbour_y = tile.1 + j;
+
+            // warn!("tile {}, {}: ({}, {})", tile.0, tile.1, neighbour_x, neighbour_y);
+
             if neighbour_x < 0 || neighbour_y < 0 || neighbour_x >= width as i32 || neighbour_y >= height as i32
             {
                 count = count + 1;
+                // warn!("tile {}, {}: count {}", tile.0, tile.1, count);
             }
             else if cave[Map::xy_id((neighbour_x, neighbour_y))] == 5
             {
                 count = count + 1;
+                // warn!("tile {}, {}: count {}", tile.0, tile.1, count);
             }
         }
     }
 
+    // warn!("{}", count);
     count
 }
