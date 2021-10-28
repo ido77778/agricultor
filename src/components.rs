@@ -1,33 +1,32 @@
-use specs_derive::Component;
-use specs::prelude::*;
+use std::collections::HashSet;
 use rltk::RGB;
 
-pub struct Position
-{
-    pub x: i32,
-    pub y: i32
-}
-
-impl Component for Position
-{
-    type Storage = VecStorage<Self>;
-}
-
-#[derive(Component)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Renderable
 {
     pub glyph: rltk::FontCharType,
     pub fg: RGB,
     pub bg: RGB,
-}
-#[derive(Component, Debug)]
+}#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Player {}
 
-#[derive(Component)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Viewshed
 {
-    pub visible_tiles: Vec<rltk::Point>,
+    pub visible_tiles: HashSet<rltk::Point>,
     pub range: i32,
     pub dirty: bool
 }
 
+impl Viewshed
+{
+    pub fn new(range: i32) -> Self
+    {
+        Self
+        {
+            visible_tiles: HashSet::new(),
+            range,
+            dirty: true
+        }
+    }    
+}

@@ -1,6 +1,6 @@
 use rand::Rng;
 
-use crate::map::Map;
+use crate::prelude::*;
 
 const DEATH_LIMIT: u8 = 3; // 3
 const BIRTH_LIMIT: u8 = 4; // 4
@@ -39,10 +39,10 @@ fn iterate(old_cave: Vec<u32>, width: usize, height: usize) -> Vec<u32>
         {
             // warn!("({}, {})", x, y);
 
-            let current_tile = Map::xy_id((x as i32, y as i32));
+            let current_tile = Point::new(x, y).to_index(width);
             let alive_neighbour_count = count_alive_neighbours(&old_cave, (x as i32, y as i32), width, height);
 
-            if old_cave[Map::xy_id((x as i32, y as i32))] == 5 // If it's a floor,
+            if old_cave[Point::new(x, y).to_index(width)] == 5 // If it's a floor,
             {
                 if alive_neighbour_count < DEATH_LIMIT
                 {
@@ -87,7 +87,7 @@ fn count_alive_neighbours(cave: &Vec<u32>, tile: (i32, i32), width: usize, heigh
                 count = count + 1;
                 // warn!("tile {}, {}: count {}", tile.0, tile.1, count);
             }
-            else if cave[Map::xy_id((neighbour_x, neighbour_y))] == 5
+            else if cave[Point::new(neighbour_x, neighbour_y).to_index(width)] == 5
             {
                 count = count + 1;
                 // warn!("tile {}, {}: count {}", tile.0, tile.1, count);

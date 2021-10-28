@@ -1,7 +1,6 @@
-use rltk::{Algorithm2D, BaseMap, Point};
-
-use crate::{JSON};
+use crate::prelude::*;
 use crate::locations::caves::generate_cavern;
+use crate::spawner::create_player;
 
 pub const WIDTH: usize = 80;
 pub const HEIGHT: usize = 50;
@@ -12,7 +11,6 @@ pub struct Map
     pub width: usize,
     pub height: usize,
     pub revealed_tiles: Vec<bool>,
-    pub visible_tiles: Vec<bool>
 }
 
 impl Map
@@ -37,37 +35,31 @@ impl Map
             width: WIDTH,
             height: HEIGHT,
             revealed_tiles: vec![false; (WIDTH+1)*(HEIGHT+1)],
-            visible_tiles: vec![false; (WIDTH+1)*(HEIGHT+1)]
         }
     }
 
-    pub fn get_tile(&self, tile: (i32, i32)) -> Option<u32>
+    pub fn get_tile(&self, tile: Point) -> &u32
     {
         // Getter for a single map tile.
         // We want to keep the game agnostic as to the actual representation of the map.
-        let index = Map::xy_id(tile);
 
-        // warn!("{}", index);
-
-        Some(self.map_vector[index])
+        error!("Tried to get non-existent tile: ({}, {})", tile.x, tile.y);
+        self.map_vector.get(tile.to_index(self.width)).expect("Tried to get a non-existent tile")
     }
 
-    pub fn set_tile(&mut self, tile: (i32, i32), value: u32)
+    pub fn set_tile(&mut self, tile: Point, value: u32)
     {
         // Setter for a single map tile.
-        self.map_vector[Map::xy_id(tile)] = value;
+        self.map_vector[tile.to_index(self.width)] = value;
     }
 
-    pub fn xy_id(tile: (i32, i32)) -> usize
-    {
-        // Returns a unique ID (scalar) for a 3D vector.
-        // The formula is WIDTH*y + x
-        if tile.0 | tile.1 < 0
-        {
-            panic!("FUGGGGG NEGATIVE TILES REEEE")
-        }
+    pub fn in_bounds(&self, point : Point) -> bool {
+        point.x >= 0 && point.x < SCREEN_WIDTH as i32 && point.y >= 0 && point.y < SCREEN_HEIGHT as i32
+    }
 
-        (tile.1 as usize * WIDTH) + tile.0 as usize
+    pub fn can_player_walk(&self, tile: Point) -> bool
+    {
+        self.in_bounds(tile) && JSON.with(|data| { data.tiles[self.get_tile(tile)].walkable })
     }
 }
 
