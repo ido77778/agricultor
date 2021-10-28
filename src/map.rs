@@ -1,6 +1,5 @@
 use crate::prelude::*;
 use crate::locations::caves::generate_cavern;
-use crate::spawner::create_player;
 
 pub const WIDTH: usize = 80;
 pub const HEIGHT: usize = 50;
