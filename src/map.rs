@@ -43,12 +43,10 @@ impl Map
     {
         // Getter for a single map tile.
         // We want to keep the game agnostic as to the actual representation of the map.
-
-        error!("Tried to get non-existent tile: ({}, {})", tile.x, tile.y);
         self.map_vector.get(tile.to_index(self.width)).expect("Tried to get a non-existent tile")
     }
 
-    pub fn set_tile(&mut self, tile: Point, value: u32)
+    pub fn _set_tile(&mut self, tile: Point, value: u32)
     {
         // Setter for a single map tile.
         self.map_vector[tile.to_index(self.width)] = value;

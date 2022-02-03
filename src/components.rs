@@ -20,7 +20,7 @@ pub struct Viewshed
 
 impl Viewshed
 {
-    pub fn new(range: i32) -> Self
+    pub fn _new(range: i32) -> Self
     {
         Self
         {

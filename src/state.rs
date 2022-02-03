@@ -34,11 +34,12 @@ impl State
         let map = Map::new();
         let player_position = Point::new(map.rooms[0].center().0, map.rooms[0].center().1);
 
+        // warn!("before: {}, {}", player_position.x, player_position.y);
         create_player(&mut ecs, player_position);
         resources.insert(Camera::new(player_position));
 
         
-        for (i, room) in map.rooms.iter().skip(1).enumerate()
+        for (_i, room) in map.rooms.iter().skip(1).enumerate()
         {
             let (x, y) = room.center();
             spawn_klkan(&mut ecs, Point::new(x, y))
