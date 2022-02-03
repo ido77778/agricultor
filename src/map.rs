@@ -1,5 +1,5 @@
 use crate::prelude::*;
-use crate::locations::caves::generate_cavern;
+use crate::locations::simple_dungeon::{generate_dungeon, Rect};
 
 pub const WIDTH: usize = 80;
 pub const HEIGHT: usize = 50;
@@ -7,9 +7,10 @@ pub const HEIGHT: usize = 50;
 pub struct Map
 {
     pub map_vector: Vec<u32>,
+    pub rooms: Vec<Rect>,
     pub width: usize,
     pub height: usize,
-    pub revealed_tiles: Vec<bool>,
+    pub revealed_tiles: Vec<bool>
 }
 
 impl Map
@@ -26,11 +27,12 @@ impl Map
         //     map[Map::xy_id((79, y)).unwrap()] = 0;
         // }
         
-        let map = generate_cavern(WIDTH, HEIGHT);
+        let (map, rooms) = generate_dungeon(WIDTH, HEIGHT);
 
         Map
         {
             map_vector: map,
+            rooms: rooms,
             width: WIDTH,
             height: HEIGHT,
             revealed_tiles: vec![false; (WIDTH+1)*(HEIGHT+1)],
@@ -60,6 +62,8 @@ impl Map
     {
         self.in_bounds(tile) && JSON.with(|data| { data.tiles[self.get_tile(tile)].walkable })
     }
+
+
 }
 
 impl Algorithm2D for Map

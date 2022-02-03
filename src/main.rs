@@ -14,6 +14,7 @@ mod prelude
 
     pub use rltk::prelude::*;
     pub use systems::*;
+    pub use crate::spawner::*;
     pub use crate::components::*;
     pub use crate::JSON;
 
@@ -36,7 +37,7 @@ fn main() -> rltk::BError
 {
     log4rs::init_file("log4rs.yml", Default::default()).unwrap();
 
-    let context = rltk::BTermBuilder::new()
+    let mut context = rltk::BTermBuilder::new()
         .with_title("Agricultor")
         .with_fps_cap(60.0)
         .with_dimensions(DISPLAY_WIDTH, DISPLAY_HEIGHT)
@@ -46,6 +47,8 @@ fn main() -> rltk::BError
         .with_simple_console(DISPLAY_WIDTH, DISPLAY_HEIGHT, "bisasam_24x24.png")
         .with_simple_console_no_bg(DISPLAY_WIDTH, DISPLAY_HEIGHT, "bisasam_24x24.png")
         .build()?;
-    
+
+    context.with_post_scanlines(false);
+
     main_loop(context, State::new())
 }

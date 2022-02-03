@@ -3,14 +3,14 @@ use std::collections::HashSet;
 use crate::prelude::*;
 use crate::{map::Map};
 
-pub fn create_player(map: &Map, ecs: &mut World, pos: Point) -> Point
+pub fn _find_walkable(map: &Map, pos: Point) -> Point
 {
-    let mut spawn_pos = Point::new(0, 0);
+    // If the supplied position isn't walkable, we iterate over the map
+    // until we find a walkable tile.
+    let mut x = 0;
+    let mut y = 0;
     if !JSON.with(|data| { data.tiles[map.get_tile(pos)].walkable })
     {
-        // If the supplied tile isn't walkable, we iterate over the map until we find one that does.
-        let mut x = 0;
-        let mut y = 0;
         while !JSON.with
         (
             |data|
@@ -26,18 +26,21 @@ pub fn create_player(map: &Map, ecs: &mut World, pos: Point) -> Point
                 x = 1;
             }
         }
-
-        spawn_pos = Point::new(x, y);
     }
     else
     {
-        spawn_pos = pos;
+        return pos;
     }
 
+    Point::new(x, y)
+}
+
+pub fn create_player(ecs: &mut World, pos: Point)
+{
     ecs.push
     (
         (
-            spawn_pos,
+            pos,
             Renderable 
             {
                 glyph: rltk::to_cp437('@'),
@@ -53,6 +56,24 @@ pub fn create_player(map: &Map, ecs: &mut World, pos: Point) -> Point
             }
         )
     );
+}
 
-    spawn_pos
+pub fn spawn_klkan(ecs: &mut World, pos: Point)
+{
+    ecs.push
+    (
+        (
+            pos,
+            Renderable
+            {
+                glyph: rltk::to_cp437('K'),
+                fg: RGB::named(rltk::BROWN1),
+                bg: RGB::named(rltk::BLACK)
+            },
+            Enemy
+            {
+                health: 100
+            }
+        )
+    );
 }

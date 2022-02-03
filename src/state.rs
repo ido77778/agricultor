@@ -1,10 +1,7 @@
+use crate::prelude::*;
 use crate::map::Map;
-use crate::spawner::create_player;
-use crate::systems::*;
+use crate::systems::build_scheduler;
 use crate::camera::Camera;
-
-use rltk::{GameState, Point, Rltk, render_draw_buffer};
-use legion::*;
 
 pub struct State
 {
@@ -35,11 +32,19 @@ impl State
         let mut resources = Resources::default();
 
         let map = Map::new();
-        let player_position = create_player(&map, &mut ecs, Point::new(45, 45));
-        resources.insert(map);
-        
+        let player_position = Point::new(map.rooms[0].center().0, map.rooms[0].center().1);
+
+        create_player(&mut ecs, player_position);
         resources.insert(Camera::new(player_position));
 
+        
+        for (i, room) in map.rooms.iter().skip(1).enumerate()
+        {
+            let (x, y) = room.center();
+            spawn_klkan(&mut ecs, Point::new(x, y))
+        }
+
+        resources.insert(map);
         Self
         {
             ecs,

@@ -30,3 +30,8 @@ impl Viewshed
         }
     }    
 }
+
+pub struct Enemy
+{
+    pub health: u16
+}
