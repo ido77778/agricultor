@@ -2,6 +2,7 @@ use std::cmp::{min, max};
 
 use crate::prelude::*;
 
+#[derive(Hash)]
 pub struct Rect
 {
     pub x1: i32,

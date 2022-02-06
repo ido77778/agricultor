@@ -4,6 +4,7 @@ use crate::locations::simple_dungeon::{generate_dungeon, Rect};
 pub const WIDTH: usize = 80;
 pub const HEIGHT: usize = 50;
 
+#[derive(Hash)]
 pub struct Map
 {
     pub map_vector: Vec<u32>,
@@ -60,8 +61,6 @@ impl Map
     {
         self.in_bounds(tile) && JSON.with(|data| { data.tiles[self.get_tile(tile)].walkable })
     }
-
-
 }
 
 impl Algorithm2D for Map
