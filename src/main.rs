@@ -15,7 +15,7 @@ mod prelude
     pub use legion::systems::CommandBuffer;
 
     pub use rltk::prelude::*;
-    pub use systems::*;
+    pub use crate::systems::*;
     pub use crate::spawner::*;
     pub use crate::components::*;
     pub use crate::JSON;

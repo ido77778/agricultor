@@ -13,7 +13,8 @@ pub fn player_input
     ecs: &mut SubWorld,
     #[resource] map: &Map,
     #[resource] camera: &mut Camera,
-    #[resource] key: &Option<VirtualKeyCode>
+    #[resource] key: &Option<VirtualKeyCode>,
+    #[resource] turn_state: &mut TurnState
 )
 {
     if let Some(key) = key
@@ -61,6 +62,7 @@ pub fn player_input
                         *player.0 = destination;
                         camera.on_player_move(&destination);
                         player.1.dirty = true;
+                        *turn_state = TurnState::PlayerTurn;
                     }
                 }
             );

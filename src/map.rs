@@ -8,6 +8,7 @@ pub const HEIGHT: usize = 50;
 pub struct Map
 {
     pub map_vector: Vec<u32>,
+    pub map_type: u32, // ID of the overmap tile. See overmap_tiles.json.
     pub rooms: Vec<Rect>,
     pub width: usize,
     pub height: usize,
@@ -33,6 +34,7 @@ impl Map
         Map
         {
             map_vector: map,
+            map_type: 0,
             rooms: rooms,
             width: WIDTH,
             height: HEIGHT,

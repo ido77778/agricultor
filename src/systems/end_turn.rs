@@ -6,8 +6,8 @@ pub fn end_turn(#[resource] turn_state: &mut TurnState)
     let new_state = match turn_state 
     {
         TurnState::AwaitingInput => return,
-        TurnState::PlayerTurn => TurnState::MonsterTurn,
-        TurnState::MonsterTurn => TurnState::AwaitingInput
+        TurnState::PlayerTurn => TurnState::AwaitingInput,
+        TurnState::SwitchLevel => TurnState::AwaitingInput
     };
     *turn_state = new_state;
 }

@@ -47,6 +47,38 @@
             "rgb": [96, 96, 96],
             "walkable": true,
             "opaque": false
+        },
+        {
+            "id": 6,
+            "name":"RightEdge",
+            "glyph": ">",
+            "rgb": [255, 255, 255],
+            "walkable": true,
+            "opaque": false
+        },
+        {
+            "id": 7,
+            "name":"LeftEdge",
+            "glyph": "<",
+            "rgb": [255, 255, 255],
+            "walkable": true,
+            "opaque": false
+        },
+        {
+            "id": 8,
+            "name":"UpEdge",
+            "glyph": "^",
+            "rgb": [255, 255, 255],
+            "walkable": true,
+            "opaque": false
+        },
+        {
+            "id": 9,
+            "name":"DownEdge",
+            "glyph": "V",
+            "rgb": [255, 255, 255],
+            "walkable": true,
+            "opaque": false
         }
     ]   
 }

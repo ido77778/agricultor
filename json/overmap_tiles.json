@@ -1,0 +1,10 @@
+{
+    "overmap_tiles": [
+        {
+            "id": 0,
+            "name": "Cavern",
+            "glyph": "#",
+            "rgb": [222, 184, 135]
+        }
+    ]
+}

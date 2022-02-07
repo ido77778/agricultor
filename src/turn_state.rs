@@ -3,6 +3,6 @@ pub enum TurnState
 {
     AwaitingInput,
     PlayerTurn,
-    MonsterTurn
-    // SwitchMap
+    SwitchLevel
+    // OvermapView
 }

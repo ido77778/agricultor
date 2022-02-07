@@ -1,13 +1,15 @@
+use crate::overmap::Overmap;
 use crate::prelude::*;
 use crate::map::Map;
-use crate::systems::build_scheduler;
 use crate::camera::Camera;
 
 pub struct State
 {
     pub ecs: World,
     pub resources: Resources,
-    pub systems: Schedule
+    pub input_systems: Schedule,
+    pub player_systems: Schedule,
+    pub switch_level_systems: Schedule
 }
 
 impl GameState for State
@@ -19,7 +21,13 @@ impl GameState for State
         ctx.set_active_console(1);
         ctx.cls();
         self.resources.insert(ctx.key);
-        self.systems.execute(&mut self.ecs, &mut self.resources);
+        let current_state = self.resources.get::<TurnState>().unwrap().clone();
+        match current_state
+        {
+            TurnState::AwaitingInput => self.input_systems.execute(&mut self.ecs, &mut self.resources),
+            TurnState::PlayerTurn => self.player_systems.execute(&mut self.ecs, &mut self.resources),
+            TurnState::SwitchLevel => self.switch_level_systems.execute(&mut self.ecs, &mut self.resources)
+        }
         render_draw_buffer(ctx).expect("Render error");
     }
 }
@@ -32,6 +40,7 @@ impl State
         let mut resources = Resources::default();
 
         let map = Map::new();
+        let mut overmap = Overmap::new();
         let player_position = Point::new(map.rooms[0].center().0, map.rooms[0].center().1);
 
         // warn!("before: {}, {}", player_position.x, player_position.y);
@@ -45,12 +54,16 @@ impl State
             spawn_klkan(&mut ecs, Point::new(x, y))
         }
 
+        resources.insert(TurnState::AwaitingInput);
+        &mut overmap.store_map(&map);
         resources.insert(map);
         Self
         {
             ecs,
             resources,
-            systems: build_scheduler()
+            input_systems: build_input_scheduler(),
+            player_systems: build_player_scheduler(),
+            switch_level_systems: build_switch_level_scheduler()
         }
     }
 }
