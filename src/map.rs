@@ -1,9 +1,6 @@
 use crate::prelude::*;
 use crate::locations::simple_dungeon::{generate_dungeon, Rect};
 
-pub const WIDTH: usize = 80;
-pub const HEIGHT: usize = 50;
-
 #[derive(Hash)]
 pub struct Map
 {
@@ -17,31 +14,6 @@ pub struct Map
 
 impl Map
 {
-    pub fn new() -> Map
-    {
-        // let mut map = vec![1; (WIDTH+1)*(HEIGHT+1)];
-        // for x in 0..80 {
-        //     map[Map::xy_id((x, 0)).unwrap()] = 0;
-        //     map[Map::xy_id((x, 49)).unwrap()] = 0;
-        // }
-        // for y in 0..50 {
-        //     map[Map::xy_id((0, y)).unwrap()] = 0;
-        //     map[Map::xy_id((79, y)).unwrap()] = 0;
-        // }
-        
-        let (map, rooms) = generate_dungeon(WIDTH, HEIGHT);
-
-        Map
-        {
-            map_vector: map,
-            map_type: 0,
-            rooms: rooms,
-            width: WIDTH,
-            height: HEIGHT,
-            revealed_tiles: vec![false; (WIDTH+1)*(HEIGHT+1)],
-        }
-    }
-
     pub fn get_tile(&self, tile: Point) -> &u32
     {
         // Getter for a single map tile.

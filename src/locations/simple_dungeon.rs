@@ -1,6 +1,6 @@
 use std::cmp::{min, max};
 
-use crate::prelude::*;
+use crate::{prelude::*, map::Map};
 
 #[derive(Hash)]
 pub struct Rect
@@ -36,7 +36,7 @@ impl Rect
     }
 }
 
-pub fn generate_dungeon(width: usize, height: usize) -> (Vec<u32>, Vec<Rect>)
+pub fn generate_dungeon(width: usize, height: usize) -> Map
 {
     let mut map = vec![0; width * height]; // Creates a map array filled with stone walls.
 
@@ -84,7 +84,19 @@ pub fn generate_dungeon(width: usize, height: usize) -> (Vec<u32>, Vec<Rect>)
         }
     }
 
-    (map, rooms)
+    let zeroth_room_center = rooms[0].center();
+    map[Point::new(zeroth_room_center.0, zeroth_room_center.1).to_index(width)] = 7;
+
+    Map
+    {
+        map_vector: map,
+        map_type: 0,
+        rooms: rooms,
+        width: width,
+        height: height,
+        revealed_tiles: vec![false; (width+1)*(height+1)],
+    }
+    // (map, rooms)
 }
 
 fn apply_room_to_map(room: &Rect, map: &mut Vec<u32>, width: usize)

@@ -26,8 +26,4 @@ pub fn switch_level
             cb.remove(*e);
         }
     }
-
-    
-    
-    
 }

@@ -1,5 +1,3 @@
-use log::MetadataBuilder;
-
 use crate::{prelude::*, map::Map};
 
 use std::collections::hash_map::DefaultHasher;

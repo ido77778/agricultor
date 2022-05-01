@@ -1,6 +1,5 @@
 use crate::overmap::Overmap;
-use crate::prelude::*;
-use crate::map::Map;
+use crate::{prelude::*, locations};
 use crate::camera::Camera;
 
 pub struct State
@@ -21,6 +20,8 @@ impl GameState for State
         ctx.set_active_console(1);
         ctx.cls();
         self.resources.insert(ctx.key);
+
+        // Defines which sequence of systems to run on each state.
         let current_state = self.resources.get::<TurnState>().unwrap().clone();
         match current_state
         {
@@ -39,7 +40,7 @@ impl State
         let mut ecs = World::default();
         let mut resources = Resources::default();
 
-        let map = Map::new();
+        let map = locations::generate_new_map();
         let mut overmap = Overmap::new();
         let player_position = Point::new(map.rooms[0].center().0, map.rooms[0].center().1);
 
@@ -57,6 +58,7 @@ impl State
         resources.insert(TurnState::AwaitingInput);
         &mut overmap.store_map(&map);
         resources.insert(map);
+        resources.insert(overmap);
         Self
         {
             ecs,

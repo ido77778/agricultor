@@ -62,7 +62,15 @@ pub fn player_input
                         *player.0 = destination;
                         camera.on_player_move(&destination);
                         player.1.dirty = true;
-                        *turn_state = TurnState::PlayerTurn;
+
+                        if map.map_vector[destination.to_index(map.width)] == 7
+                        {
+                            *turn_state = TurnState::SwitchLevel;
+                        }
+                        else
+                        {
+                            *turn_state = TurnState::PlayerTurn;
+                        }
                     }
                 }
             );
