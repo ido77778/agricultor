@@ -1,6 +1,6 @@
 use std::{collections::HashMap, error, fs::File, io::BufReader, path::Path};
 
-use serde::{Deserialize};
+use serde::Deserialize;
 
 // Contains all useful JSON data.
 pub struct JsonData

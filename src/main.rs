@@ -18,7 +18,6 @@ mod prelude
     pub use crate::systems::*;
     pub use crate::spawner::*;
     pub use crate::components::*;
-    pub use crate::JSON;
     pub use crate::turn_state::*;
 
     pub const SCREEN_WIDTH: u8 = 80;
@@ -27,14 +26,11 @@ mod prelude
     pub const DISPLAY_HEIGHT: u8 = SCREEN_HEIGHT / 2;
 }
 
-use json::JsonData;
 use state::State;
 use prelude::*;
 
 #[macro_use]
 extern crate log;
-
-thread_local! {pub static JSON: JsonData = JsonData::new() }
 
 fn main() -> rltk::BError
 {

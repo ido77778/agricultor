@@ -1,3 +1,4 @@
+use crate::json::JsonData;
 use crate::overmap::Overmap;
 use crate::{prelude::*, locations};
 use crate::camera::Camera;
@@ -40,7 +41,9 @@ impl State
         let mut ecs = World::default();
         let mut resources = Resources::default();
 
-        let map = locations::generate_new_map();
+        let json: JsonData = JsonData::new();
+
+        let map = locations::generate_new_map(json);
         let mut overmap = Overmap::new();
         let player_position = Point::new(map.rooms[0].center().0, map.rooms[0].center().1);
 
@@ -59,6 +62,9 @@ impl State
         &mut overmap.store_map(&map);
         resources.insert(map);
         resources.insert(overmap);
+        
+        let json: JsonData = JsonData::new();
+        resources.insert(json);
         Self
         {
             ecs,

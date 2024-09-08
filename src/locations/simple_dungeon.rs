@@ -1,5 +1,7 @@
 use std::cmp::{min, max};
 
+use crate::json::JsonData;
+
 use crate::{prelude::*, map::Map};
 
 #[derive(Hash)]
@@ -36,7 +38,7 @@ impl Rect
     }
 }
 
-pub fn generate_dungeon(width: usize, height: usize) -> Map
+pub fn generate_dungeon(width: usize, height: usize, json: JsonData) -> Map
 {
     let mut map = vec![0; width * height]; // Creates a map array filled with stone walls.
 
@@ -95,6 +97,7 @@ pub fn generate_dungeon(width: usize, height: usize) -> Map
         width: width,
         height: height,
         revealed_tiles: vec![false; (width+1)*(height+1)],
+        json: json
     }
     // (map, rooms)
 }

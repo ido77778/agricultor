@@ -1,23 +1,18 @@
 use std::collections::HashSet;
 
+use crate::json::JsonData;
 use crate::prelude::*;
 use crate::{map::Map};
 
-pub fn _find_walkable(map: &Map, pos: Point) -> Point
+pub fn _find_walkable(map: &Map, pos: Point, json: JsonData) -> Point
 {
     // If the supplied position isn't walkable, we iterate over the map
     // until we find a walkable tile.
     let mut x = 0;
     let mut y = 0;
-    if !JSON.with(|data| { data.tiles[map.get_tile(pos)].walkable })
+    if json.tiles[map.get_tile(pos)].walkable
     {
-        while !JSON.with
-        (
-            |data|
-            {
-                data.tiles[map.get_tile(Point::new(x, y))].walkable
-            }
-        )
+        while !json.tiles[map.get_tile(Point::new(x, y))].walkable
         {
             x = x + 1;
             if x == (map.width-1) as i32

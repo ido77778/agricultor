@@ -1,6 +1,7 @@
 use rltk::VirtualKeyCode;
 
 use crate::camera::Camera;
+use crate::json::JsonData;
 use crate::prelude::*;
 use crate::map::Map;
 
@@ -14,7 +15,8 @@ pub fn player_input
     #[resource] map: &Map,
     #[resource] camera: &mut Camera,
     #[resource] key: &Option<VirtualKeyCode>,
-    #[resource] turn_state: &mut TurnState
+    #[resource] turn_state: &mut TurnState,
+    #[resource] json: &JsonData
 )
 {
     if let Some(key) = key

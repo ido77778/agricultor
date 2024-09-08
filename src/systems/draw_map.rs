@@ -1,4 +1,5 @@
 use crate::camera::Camera;
+use crate::json::JsonData;
 use crate::prelude::*;
 use crate::map::Map;
 use crate::components::{Player, Viewshed};
@@ -10,7 +11,8 @@ pub fn draw_map
 (
     ecs: &SubWorld,
     #[resource] map: &Map,
-    #[resource] camera: &Camera
+    #[resource] camera: &Camera,
+    #[resource] json: &JsonData
 )
 {
     let mut viewshed = <&Viewshed>::query().filter(component::<Player>());
@@ -29,8 +31,8 @@ pub fn draw_map
             {
                 let tile = map.get_tile(pt);
                     
-                let color = JSON.with(|data|{ data.tiles[&tile].rgb });
-                let glyph = JSON.with(|data|{ data.tiles[&tile].glyph });
+                let color = json.tiles[&tile].rgb;
+                let glyph = json.tiles[&tile].glyph;
                 if player_viewshed.visible_tiles.contains(&pt)
                 {
                     // If it's in the player's FOV, we want to draw the tile in full color.

@@ -7,13 +7,13 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rltk = "0.8.1"
+rltk = "0.8.7"
 legion = "0.4.0"
 
-serde_json = "1.0.64"
-serde = { version = "1.0.125", features = ["derive"] }
+serde_json = "1.0.128"
+serde = { version = "1.0.210", features = ["derive"] }
 
-log = "0.4.14"
-log4rs = { version = "1.0.0", features = ["file_appender"] }
+log = "0.4.22"
+log4rs = { version = "1.3.0", features = ["file_appender"] }
 
 rand = "0.8.4"
